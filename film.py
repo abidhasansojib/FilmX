@@ -1,10 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 url_list = {}
-api_key = "d96b5701f88a4485045bfe259cda230fb9ee6035"
-
 
 def search_movies(query):
     movies_list = []
@@ -20,7 +17,6 @@ def search_movies(query):
         movies_details = {}
     return movies_list
 
-
 def get_movie(query):
     movie_details = {}
     movie_page_link = BeautifulSoup(requests.get(f"{url_list[query]}").text, "html.parser")
@@ -32,10 +28,6 @@ def get_movie(query):
         links = movie_page_link.find_all("a", {'rel': 'noopener', 'data-wpel-link': 'internal'})
         final_links = {}
         for i in links:
-            url = f"https://urlshortx.com/api?api={api_key}&url={i['href']}"
-            response = requests.get(url)
-            link = response.json()
-            final_links[f"{i.text}"] = link['shortenedUrl']
+            final_links[f"{i.text}"] = i['href']
         movie_details["links"] = final_links
     return movie_details
-
